@@ -12,7 +12,15 @@ class Battleship < Game
   end
 
   def board_for_user user
-    board_json = state[user.id]
+    board_json = state[user.id.to_s]
     Board.from_json board_json
+  end
+
+  def need_to_place_ships?
+    false
+  end
+
+  def player_turn? user
+    current_player_id == user.id
   end
 end

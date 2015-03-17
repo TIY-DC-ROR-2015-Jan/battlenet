@@ -1,9 +1,9 @@
 table
   - @board.rows.each do |row|
     tr
-      - @row.cells.each do |cell|
+      - row.each do |cell|
         td
-          - if @game.placing?
+          - if @game.need_to_place_ships?
             button →
             button ↓
           - else

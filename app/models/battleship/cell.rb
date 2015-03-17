@@ -4,4 +4,16 @@ class Battleship::Cell
     @fired_on  = false
     @ship      = nil
   end
+
+  def fired_on?
+    @fired_on
+  end
+
+  def has_ship?
+    !@ship.nil?
+  end
+
+  def hit?
+    has_ship? && fired_on?
+  end
 end
