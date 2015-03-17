@@ -1,0 +1,2 @@
+class Battleship < Game
+end
