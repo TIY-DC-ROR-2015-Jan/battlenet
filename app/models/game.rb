@@ -3,4 +3,6 @@ class Game < ActiveRecord::Base
 
   has_many :game_users
   has_many :players, through: :game_users, source: :user
+
+  scope :battleship, -> { where(type: "Battleship") }
 end

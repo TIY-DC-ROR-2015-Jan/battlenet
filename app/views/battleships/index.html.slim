@@ -1,0 +1,11 @@
+h1 Your Battleship games
+
+table.table.table-striped.table-hover
+  thead
+    tr
+      th Opponent
+      th Started At
+  tbody
+    - @games.each do |g|
+      td= g.players
+      td= g.created_at
