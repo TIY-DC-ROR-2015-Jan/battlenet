@@ -12,4 +12,7 @@ table
             - elsif cell.fired_on?
               | O
             - elsif @game.player_turn? current_user
-              button !
+              = form_tag battleship_path(@game), method: :patch do
+                input type="hidden" name="row" value=cell.row
+                input type="hidden" name="col" value=cell.col
+                button !

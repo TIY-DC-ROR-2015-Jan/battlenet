@@ -7,4 +7,6 @@ class Game < ActiveRecord::Base
   has_many :players, through: :game_users, source: :user
 
   scope :battleship, -> { where(type: "Battleship") }
+
+  class IllegalMove < StandardError; end
 end

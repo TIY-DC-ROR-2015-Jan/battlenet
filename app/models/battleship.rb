@@ -23,4 +23,14 @@ class Battleship < Game
   def player_turn? user
     current_player_id == user.id
   end
+
+  def record_move user, row:, col:
+    unless player_turn? user
+      raise IllegalMove, "It's not your turn"
+    end
+    board = board_for_user user
+    board.fire_on! row, col
+    state[user.id] = board
+    save!
+  end
 end

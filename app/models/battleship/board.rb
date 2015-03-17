@@ -24,4 +24,12 @@ class Battleship::Board
   def as_json *args
     @rows.as_json *args
   end
+
+  def cell_at row, col
+    @rows[row.to_i][col.to_i]
+  end
+
+  def fire_on! row, col
+    cell_at(row, col).fired_on!
+  end
 end
