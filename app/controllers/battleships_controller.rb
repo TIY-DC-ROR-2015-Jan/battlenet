@@ -14,4 +14,9 @@ class BattleshipsController < ApplicationController
     game.players.push opponent
     redirect_to battleship_path(game)
   end
+
+  def show
+    @game  = current_user.games.battleship.find params[:id]
+    @board = @game.board_for_user current_user
+  end
 end

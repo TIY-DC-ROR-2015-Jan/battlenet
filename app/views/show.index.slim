@@ -1,0 +1,15 @@
+table
+  - @board.rows.each do |row|
+    tr
+      - @row.cells.each do |cell|
+        td
+          - if @game.placing?
+            button →
+            button ↓
+          - else
+            - if cell.hit?
+              | X
+            - elsif cell.fired_on?
+              | O
+            - elsif @game.player_turn? current_user
+              button !
