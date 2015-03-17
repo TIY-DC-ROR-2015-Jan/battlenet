@@ -1,11 +1,16 @@
 h1 Your Battleship games
 
+= link_to "Start Game", new_battleship_path, class: "btn btn-success"
+
 table.table.table-striped.table-hover
   thead
     tr
+      th
       th Opponent
       th Started At
   tbody
     - @games.each do |g|
-      td= g.players
-      td= g.created_at
+      tr
+        td= link_to g.id, battleship_path(g)
+        td= g.players.last.email
+        td #{distance_of_time_in_words g.created_at, Time.now} ago
