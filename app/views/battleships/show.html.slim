@@ -1,4 +1,6 @@
-- if @game.player_turn? current_user
+- if @game.need_to_place_ships?
+  p Placing #{@game.next_ship_to_place.name}
+- elsif @game.player_turn? current_user
   p Your turn
 - else
   p Waiting on opponent
@@ -9,8 +11,21 @@ table.battleship-grid
       - row.each do |cell|
         td
           - if @game.need_to_place_ships?
-            button →
-            button ↓
+            - if cell.has_ship?
+              = cell.ship.first
+            - else
+              = form_tag battleship_path(@game), method: :patch do
+                input type="hidden" name="row" value=cell.row
+                input type="hidden" name="col" value=cell.col
+                input type="hidden" name="dir" value="right"
+                input type="hidden" name="thing_to_do" value="place"
+                button →
+              = form_tag battleship_path(@game), method: :patch do
+                input type="hidden" name="row" value=cell.row
+                input type="hidden" name="col" value=cell.col
+                input type="hidden" name="dir" value="down"
+                input type="hidden" name="thing_to_do" value="place"
+                button ↓
           - else
             - if cell.hit?
               | X
@@ -20,4 +35,5 @@ table.battleship-grid
               = form_tag battleship_path(@game), method: :patch do
                 input type="hidden" name="row" value=cell.row
                 input type="hidden" name="col" value=cell.col
+                input type="hidden" name="thing_to_do" value="fire"
                 button !

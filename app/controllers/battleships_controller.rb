@@ -15,13 +15,21 @@ class BattleshipsController < ApplicationController
 
   def show
     @game  = current_user.games.battleship.find params[:id]
-    @board = @game.board_for_user current_user
+    @board = if @game.need_to_place_ships?
+      @game.board_for_opponent current_user
+    else
+      @game.board_for_board current_user
+    end
   end
 
   def update
     game = current_user.games.battleship.find params[:id]
     begin
-      game.record_move current_user, row: params[:row], col: params[:col]
+      if params[:thing_to_do] == "place"
+        game.place_ship current_user, row: params[:row], col: params[:col], dir: params[:dir]
+      else
+        game.record_move current_user, row: params[:row], col: params[:col]
+      end
     rescue Game::IllegalMove => e
       flash[:error] = "Illegal move: #{e}"
     end

@@ -1,5 +1,5 @@
 class Battleship::Cell
-  attr_reader :row, :col
+  attr_reader :row, :col, :ship
 
   def initialize row, col
     @row, @col = row, col
@@ -18,6 +18,13 @@ class Battleship::Cell
     @fired_on
   end
 
+  def occupied_with! ship_name
+    if has_ship?
+      raise Game::IllegalMove, "Cell is already occupied"
+    else
+      @ship = ship_name
+    end
+  end
   def has_ship?
     !@ship.nil?
   end

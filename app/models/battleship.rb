@@ -1,4 +1,21 @@
 class Battleship < Game
+  class Ship
+    attr_reader :name, :length
+    def initialize name, length
+      @name, @length = name, length
+    end
+  end
+
+  def self.ships
+    {
+      "Battleship"  => 4,
+      "Carrier"     => 5,
+      "Submarine"   => 3,
+      "Destroyer"   => 3,
+      "Patrol Boat" => 2
+    }.map { |name, length| Ship.new(name, length) }
+  end
+
   def self.start_game p1,p2
     game = Battleship.create!({
       current_player_id: p1.id,
@@ -17,7 +34,7 @@ class Battleship < Game
   end
 
   def need_to_place_ships?
-    false
+    true
   end
 
   def player_turn? user
@@ -36,5 +53,26 @@ class Battleship < Game
 
   def next_player
     players.where.not(id: current_player_id).first
+  end
+
+  def opponent user
+    players.where.not(id: user.id).first
+  end
+
+  def board_for_opponent user
+    board_for_user opponent(user)
+  end
+
+  def place_ship user, row:, col:, dir:
+    opp = opponent user
+    opp_board = board_for_user opp
+    opp_board.place_ship! next_ship_to_place,
+      row: row.to_i, col: col.to_i, dir: dir
+    state[opp.id] = opp_board
+    save!
+  end
+
+  def next_ship_to_place
+    Battleship.ships.first
   end
 end
