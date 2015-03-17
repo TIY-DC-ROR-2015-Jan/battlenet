@@ -54,13 +54,27 @@ class Battleship::Board
     cells.each { |c| c.occupied_with! ship.name }
   end
 
-  def placed_ships
-    seen = Set.new
+  def each_cell &block
     @rows.each do |row|
       row.each do |cell|
-        seen << cell.ship if cell.ship
+        # yield cell
+        block.call cell
       end
     end
+  end
+
+  def lost?
+    each_cell do |c|
+      if c.has_ship? && !c.fired_on?
+        return false
+      end
+    end
+    return true
+  end
+
+  def placed_ships
+    seen = Set.new
+    each_cell { |c| seen << c.ship if c.ship }
     seen
   end
 
