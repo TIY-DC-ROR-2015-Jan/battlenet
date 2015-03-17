@@ -9,9 +9,7 @@ class BattleshipsController < ApplicationController
 
   def create
     opponent = User.find params[:opponent_id]
-    game = Battleship.create!
-    game.players.push current_user
-    game.players.push opponent
+    game = Battleship.start_game current_user, opponent
     redirect_to battleship_path(game)
   end
 
