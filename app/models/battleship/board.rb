@@ -47,10 +47,28 @@ class Battleship::Board
 
   def place_ship! ship, row:, col:, dir:
     cells = if dir == "right"
-      0.upto(ship.length).map { |i| cell_at(row, col + i) }
+      0.upto(ship.length - 1).map { |i| cell_at(row, col + i) }
     else
-      0.upto(ship.length).map { |i| cell_at(row + i, col) }
+      0.upto(ship.length - 1).map { |i| cell_at(row + i, col) }
     end
     cells.each { |c| c.occupied_with! ship.name }
+  end
+
+  def placed_ships
+    seen = Set.new
+    @rows.each do |row|
+      row.each do |cell|
+        seen << cell.ship if cell.ship
+      end
+    end
+    seen
+  end
+
+  def next_ship_to_place
+    Battleship.ships.reject { |s| placed_ships.include? s.name }.first
+  end
+
+  def need_to_place_ships?
+    next_ship_to_place.present?
   end
 end

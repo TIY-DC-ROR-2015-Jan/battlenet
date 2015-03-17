@@ -1,5 +1,8 @@
 - if @game.need_to_place_ships?
-  p Placing #{@game.next_ship_to_place.name}
+  - if @board.next_ship_to_place
+    p Placing #{@board.next_ship_to_place.name}
+  - else
+    p Waiting on opponent to place ships
 - elsif @game.player_turn? current_user
   p Your turn
 - else
@@ -10,7 +13,7 @@ table.battleship-grid
     tr
       - row.each do |cell|
         td
-          - if @game.need_to_place_ships?
+          - if @board.need_to_place_ships?
             - if cell.has_ship?
               = cell.ship.first
             - else

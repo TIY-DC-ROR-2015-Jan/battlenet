@@ -18,7 +18,7 @@ class BattleshipsController < ApplicationController
     @board = if @game.need_to_place_ships?
       @game.board_for_opponent current_user
     else
-      @game.board_for_board current_user
+      @game.board_for_user current_user
     end
   end
 

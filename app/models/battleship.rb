@@ -26,15 +26,12 @@ class Battleship < Game
     })
     game.players.push p1
     game.players.push p2
+    game
   end
 
   def board_for_user user
     board_json = state[user.id.to_s]
     Board.from_json board_json
-  end
-
-  def need_to_place_ships?
-    true
   end
 
   def player_turn? user
@@ -66,13 +63,13 @@ class Battleship < Game
   def place_ship user, row:, col:, dir:
     opp = opponent user
     opp_board = board_for_user opp
-    opp_board.place_ship! next_ship_to_place,
+    opp_board.place_ship! opp_board.next_ship_to_place,
       row: row.to_i, col: col.to_i, dir: dir
     state[opp.id] = opp_board
     save!
   end
 
-  def next_ship_to_place
-    Battleship.ships.first
+  def need_to_place_ships?
+    players.any? { |p| board_for_user(p).need_to_place_ships? }
   end
 end
