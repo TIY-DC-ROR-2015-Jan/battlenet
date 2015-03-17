@@ -31,6 +31,10 @@ class Battleship < Game
     board = board_for_user user
     board.fire_on! row, col
     state[user.id] = board
-    save!
+    update! current_player_id: next_player.id
+  end
+
+  def next_player
+    players.where.not(id: current_player_id).first
   end
 end

@@ -27,6 +27,8 @@ class Battleship::Board
 
   def cell_at row, col
     @rows[row.to_i][col.to_i]
+  rescue => e
+    raise Game::IllegalMove, "Cell is out of bounds"
   end
 
   def fire_on! row, col

@@ -8,7 +8,11 @@ class Battleship::Cell
   end
 
   def fired_on!
-    @fired_on = true
+    if fired_on?
+      raise Game::IllegalMove, "This cell has already been fired on"
+    else
+      @fired_on = true
+    end
   end
   def fired_on?
     @fired_on

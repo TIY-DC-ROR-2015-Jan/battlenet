@@ -1,4 +1,9 @@
-table
+- if @game.player_turn? current_user
+  p Your turn
+- else
+  p Waiting on opponent
+
+table.battleship-grid
   - @board.rows.each do |row|
     tr
       - row.each do |cell|

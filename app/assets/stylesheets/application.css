@@ -13,3 +13,10 @@
  *= require_tree .
  *= require_self
  */
+
+.battleship-grid td {
+  height: 20px;
+  width: 20px;
+  border: 1px solid black;
+  text-align: center;
+}
