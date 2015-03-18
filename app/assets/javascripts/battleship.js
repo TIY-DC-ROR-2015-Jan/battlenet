@@ -1,21 +1,23 @@
-var poll;
-
 $(function() {
-  // Calls checkForMyTurn every 2 sec
-  poll = setInterval(checkForMyTurn, 2000);
+  $('[data-battleship-check-id]').each(function(i, box) {
+    var battleship_id = $(box).data('battleship-check-id');
+    startPolling(battleship_id, box);
+  });
 });
 
-var checkForMyTurn = function() {
-  $.ajax("/battleships/15/ready", {
-    method: "GET",
-    success: function(response) {
-      if (response.ready) {
-        clearInterval(poll);
-        $('#your-turn').removeClass('hide');
-      } else {
-        console.log("Not your turn yet");
-      }
-    },
-    error: function() { alert("Something went wrong"); }
-  });
+var startPolling = function(battleship_id, box) {
+  var poll = setInterval(function() {
+    $.ajax("/battleships/" + battleship_id + "/ready", {
+      method: "GET",
+      success: function(response) {
+        if (response.ready) {
+          clearInterval(poll);
+          $(box).removeClass('hide');
+        } else {
+          console.log("Not your turn yet");
+        }
+      },
+      error: function() { alert("Something went wrong"); }
+    });
+  }, 2000);
 }
