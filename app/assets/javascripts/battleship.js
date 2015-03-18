@@ -11,8 +11,7 @@ var checkForMyTurn = function() {
     success: function(response) {
       if (response.ready) {
         clearInterval(poll);
-        var alertMessage = $("<div class='alert alert-success'>It's your turn</div>");
-        $("#main-content").prepend(alertMessage);
+        $('#your-turn').removeClass('hide');
       } else {
         console.log("Not your turn yet");
       }
