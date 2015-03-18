@@ -1,19 +1,22 @@
+var poll;
+
 $(function() {
   // Calls checkForMyTurn every 2 sec
-  //setInterval(checkForMyTurn, 2000);
-
-  $('.battleship-ajax').click(checkForMyTurn);
+  poll = setInterval(checkForMyTurn, 2000);
 });
 
 var checkForMyTurn = function() {
-  $.ajax("/ajax_handler", {
-    method: "PUT",
-    data: { phrase: "hello" },
+  $.ajax("/battleships/15/ready", {
+    method: "GET",
     success: function(response) {
-      console.log(response);
-      alert("Reversed string: '" + response.reversed  + "'.");
+      if (response.ready) {
+        clearInterval(poll);
+        var alertMessage = $("<div class='alert alert-success'>It's your turn</div>");
+        $("#main-content").prepend(alertMessage);
+      } else {
+        console.log("Not your turn yet");
+      }
     },
-    error: function() { console.log("Something went wrong"); }
+    error: function() { alert("Something went wrong"); }
   });
-  console.log("Here");
 }

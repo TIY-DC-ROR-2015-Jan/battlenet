@@ -36,7 +36,11 @@ class BattleshipsController < ApplicationController
     redirect_to battleship_path(game)
   end
 
-  def demo
-    render json: { reversed: params[:phrase].reverse }, status: 200
+  def ready
+    game = current_user.games.battleship.find params[:id]
+    render json: {
+      current_player: User.find(game.current_player_id).email,
+      ready: game.player_turn?(current_user)
+    }
   end
 end
