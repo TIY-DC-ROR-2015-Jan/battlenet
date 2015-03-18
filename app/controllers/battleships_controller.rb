@@ -35,4 +35,8 @@ class BattleshipsController < ApplicationController
     end
     redirect_to battleship_path(game)
   end
+
+  def demo
+    render json: { reversed: params[:phrase].reverse }, status: 200
+  end
 end
