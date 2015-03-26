@@ -6,27 +6,31 @@ class Battleship < Game
     end
   end
 
-  def self.ships
-    {
-      "Battleship"  => 4,
-      "Carrier"     => 5,
-      "Submarine"   => 3,
-      "Destroyer"   => 3,
-      "Patrol Boat" => 2
-    }.map { |name, length| Ship.new(name, length) }
-  end
+  class << self
+    def ships
+      {
+        "Battleship"  => 4,
+        "Carrier"     => 5,
+        "Submarine"   => 3,
+        "Destroyer"   => 3,
+        "Patrol Boat" => 2
+      }.map { |name, length| Ship.new(name, length) }
+    end
 
-  def self.start_game p1,p2
-    game = Battleship.create!({
-      current_player_id: p1.id,
-      state: {
-        p1.id => Board.new,
-        p2.id => Board.new
-      }
-    })
-    game.players.push p1
-    game.players.push p2
-    game
+    def start_game p1,p2
+      game = Battleship.create!({
+        current_player_id: p1.id,
+        state: {
+          p1.id => Battleship::Board.new,
+          p2.id => Battleship::Board.new
+        }
+      })
+      game.players.push p1
+      game.players.push p2
+      game
+    end
+
+    private :new
   end
 
   def board_for_user user
